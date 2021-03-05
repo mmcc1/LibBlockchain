@@ -13,10 +13,16 @@ namespace ProofOfWork
             
             BlockchainPow bp = new BlockchainPow();
             
-            blockchain.Entries[10].POWHash = bp.PoW(21531652117561719, blockchain.Entries[10]);
+            Tuple<byte[], Guid> tp = bp.PoW(ulong.MaxValue, blockchain.Entries[10]);
+            blockchain.Entries[10].POWHash = tp.Item1;
+            blockchain.Entries[10].Nonce = tp.Item2;
+
             Console.WriteLine(GetStringFromHash(blockchain.Entries[10].POWHash));
 
-            blockchain.Entries[10].POWHash = bp.PoW(2, blockchain.Entries[10]);
+            Tuple<byte[], Guid> tp2 = bp.PoW(2, blockchain.Entries[10]);
+            blockchain.Entries[10].POWHash = tp2.Item1;
+            blockchain.Entries[10].Nonce = tp2.Item2;
+
             Console.WriteLine(GetStringFromHash(blockchain.Entries[10].POWHash));
             Console.ReadLine();
         }

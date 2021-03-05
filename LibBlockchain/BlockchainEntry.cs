@@ -13,6 +13,7 @@ namespace LibBlockchain
         public byte[] Hash { get; set; }
         public bool IsPOW { get; set; }
         public byte[] POWHash { get; set; }
+        public Guid? Nonce { get; set; }
 
 
         public byte[] HashEntry()
@@ -26,9 +27,9 @@ namespace LibBlockchain
             }
         }
 
-        public byte[] HashPowEntry()
+        public byte[] HashPowEntry(Guid newGuid)
         {
-            string toBeHashed = Id.ToString() + PrevId.ToString() + Data.ToString() + Timestamp.ToString() + Hash.ToString() + Guid.NewGuid();
+            string toBeHashed = Id.ToString() + PrevId.ToString() + Data.ToString() + Timestamp.ToString() + Hash.ToString() + newGuid;
             byte[] bytesToBeHashed = Encoding.Unicode.GetBytes(toBeHashed);
 
             using (SHA512 shaM = new SHA512Managed())

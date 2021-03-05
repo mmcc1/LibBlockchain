@@ -12,13 +12,15 @@ namespace LibBlockchain
             rng = new RNGCryptoServiceProvider();
         }
 
-        public byte[] PoW(ulong difficulty, BlockchainEntry bce)
+        public Tuple<byte[], Guid> PoW(ulong difficulty, BlockchainEntry bce)
         {
             bool finish = false;
+            
 
             while (!finish)
             {
-                byte[] bytesToBeHashed = bce.HashPowEntry();
+                Guid nonce = Guid.NewGuid();
+                byte[] bytesToBeHashed = bce.HashPowEntry(nonce);
                 byte[] hash = null;
 
                 using (SHA512 shaM = new SHA512Managed())
@@ -29,19 +31,21 @@ namespace LibBlockchain
                 ulong dif = BitConverter.ToUInt64(hash, 0);
 
                 if (dif < difficulty)
-                    return hash;
+                    return Tuple.Create(hash, nonce);
             }
 
             return null;
         }
 
-        public byte[] PoW(int difficulty, BlockchainEntry bce)
+        public Tuple<byte[], Guid> PoW(int difficulty, BlockchainEntry bce)
         {
             bool finish = false;
+            
 
             while (!finish)
             {
-                byte[] bytesToBeHashed = bce.HashPowEntry();
+                Guid nonce = Guid.NewGuid();
+                byte[] bytesToBeHashed = bce.HashPowEntry(nonce);
                 byte[] hash = null;
 
                 using (SHA512 shaM = new SHA512Managed())
@@ -52,7 +56,7 @@ namespace LibBlockchain
                 int clz = CountLeadingZeros(hash);
 
                 if (clz == difficulty)
-                    return hash;
+                    return Tuple.Create(hash, nonce);
             }
 
             return null;
