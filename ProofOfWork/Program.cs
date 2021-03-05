@@ -56,6 +56,13 @@ namespace ProofOfWork
                 new BlockchainEntry() { Id = guids[10], Data = "ProofOfWork" , IsPOW = true, PrevId = guids[9], Timestamp = DateTime.UtcNow }
             };
 
+            blockchain.Entries.AddRange(blockchains);
+
+            for (int i = 0; i < blockchains.Length - 1; i++)
+            {
+                blockchain.Entries[i].Hash = blockchain.Entries[i].HashEntry();
+            }
+
             blockchain.Entries[10].Data = GetStringFromHash(blockchain.Entries[0].Hash) +
                     GetStringFromHash(blockchain.Entries[1].Hash) +
                     GetStringFromHash(blockchain.Entries[2].Hash) +
@@ -67,12 +74,7 @@ namespace ProofOfWork
                     GetStringFromHash(blockchain.Entries[8].Hash) +
                     GetStringFromHash(blockchain.Entries[9].Hash);
 
-            for (int i = 0; i < blockchains.Length; i++)
-            {
-                blockchains[i].Hash = blockchains[i].HashEntry();
-            }
-
-            blockchain.Entries.AddRange(blockchains);
+            blockchain.Entries[10].Hash = blockchain.Entries[10].HashEntry();
 
             return blockchain;
         }
