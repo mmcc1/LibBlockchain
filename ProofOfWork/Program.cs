@@ -64,7 +64,7 @@ namespace ProofOfWork
 
             blockchain.Entries.AddRange(blockchains);
 
-            for (int i = 0; i < blockchains.Length - 1; i++)
+            for (int i = 0; i < blockchain.Entries.Count - 1; i++)
             {
                 blockchain.Entries[i].Hash = blockchain.Entries[i].HashEntry();
             }
