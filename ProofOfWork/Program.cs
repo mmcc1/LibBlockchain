@@ -9,23 +9,29 @@ namespace ProofOfWork
     {
         static void Main(string[] args)
         {
+            //Create a test blockchain
             Blockchain blockchain = GenerateTestBlockChain();
             
+
+            //Do Proof of Work
             BlockchainPow bp = new BlockchainPow();
-            
+
+            //Proof of work - ulong - lower ulong equals increased difficulty
             Tuple<byte[], Guid> tp = bp.PoW(ulong.MaxValue, blockchain.Entries[10]);
             blockchain.Entries[10].POWHash = tp.Item1;
             blockchain.Entries[10].Nonce = tp.Item2;
 
             Console.WriteLine(GetStringFromHash(blockchain.Entries[10].POWHash));
 
-            Tuple<byte[], Guid> tp2 = bp.PoW(3, blockchain.Entries[10]);
+            //Proof of work - int - higher int equals increased difficulty
+            Tuple<byte[], Guid> tp2 = bp.PoW(2, blockchain.Entries[10]);
             blockchain.Entries[10].POWHash = tp2.Item1;
             blockchain.Entries[10].Nonce = tp2.Item2;
 
             Console.WriteLine(GetStringFromHash(blockchain.Entries[10].POWHash));
             Console.ReadLine();
         }
+
 
         private static Blockchain GenerateTestBlockChain()
         {
@@ -69,15 +75,15 @@ namespace ProofOfWork
                 blockchain.Entries[i].Hash = blockchain.Entries[i].HashEntry();
             }
 
-            blockchain.Entries[10].Data = GetStringFromHash(blockchain.Entries[0].Hash) +
-                    GetStringFromHash(blockchain.Entries[1].Hash) +
-                    GetStringFromHash(blockchain.Entries[2].Hash) +
-                    GetStringFromHash(blockchain.Entries[3].Hash) +
-                    GetStringFromHash(blockchain.Entries[4].Hash) +
-                    GetStringFromHash(blockchain.Entries[5].Hash) +
-                    GetStringFromHash(blockchain.Entries[6].Hash) +
-                    GetStringFromHash(blockchain.Entries[7].Hash) +
-                    GetStringFromHash(blockchain.Entries[8].Hash) +
+            blockchain.Entries[10].Data = GetStringFromHash(blockchain.Entries[0].Hash) + ":" +
+                    GetStringFromHash(blockchain.Entries[1].Hash) + ":" +
+                    GetStringFromHash(blockchain.Entries[2].Hash) + ":" +
+                    GetStringFromHash(blockchain.Entries[3].Hash) + ":" +
+                    GetStringFromHash(blockchain.Entries[4].Hash) + ":" +
+                    GetStringFromHash(blockchain.Entries[5].Hash) + ":" +
+                    GetStringFromHash(blockchain.Entries[6].Hash) + ":" +
+                    GetStringFromHash(blockchain.Entries[7].Hash) + ":" +
+                    GetStringFromHash(blockchain.Entries[8].Hash) + ":" +
                     GetStringFromHash(blockchain.Entries[9].Hash);
 
             blockchain.Entries[10].Hash = blockchain.Entries[10].HashEntry();
