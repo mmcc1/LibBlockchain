@@ -11,19 +11,31 @@ namespace LibBlockchain
         public string Data { get; set; }
         public DateTime Timestamp { get; set; }
         public byte[] Hash { get; set; }
+        public byte[] PreviousHash { get; set; }
         public bool IsPOW { get; set; }
         public byte[] POWHash { get; set; }
         public Guid? Nonce { get; set; }
 
 
-        public byte[] HashEntry()
+        public void HashGenysisEntry()
         {
-            string toBeHashed = Id.ToString() + PrevId.ToString() + Data.ToString() + Timestamp.ToString();
+            string toBeHashed = Id.ToString() + Data.ToString() + Timestamp.ToString();
             byte[] bytesToBeHashed = Encoding.Unicode.GetBytes(toBeHashed);
 
             using (SHA512 shaM = new SHA512Managed())
             {
-                return shaM.ComputeHash(bytesToBeHashed);
+                Hash = shaM.ComputeHash(bytesToBeHashed);
+            }
+        }
+
+        public void HashEntry(byte[] previousHash)
+        {
+            string toBeHashed = Id.ToString() + PrevId.ToString() + Data.ToString() + Timestamp.ToString() + previousHash.ToString();
+            byte[] bytesToBeHashed = Encoding.Unicode.GetBytes(toBeHashed);
+
+            using (SHA512 shaM = new SHA512Managed())
+            {
+                Hash = shaM.ComputeHash(bytesToBeHashed);
             }
         }
 

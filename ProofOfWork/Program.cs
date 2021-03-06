@@ -70,9 +70,11 @@ namespace ProofOfWork
 
             blockchain.Entries.AddRange(blockchains);
 
-            for (int i = 0; i < blockchain.Entries.Count - 1; i++)
+            blockchain.Entries[0].HashGenysisEntry();
+
+            for (int i = 1; i < blockchain.Entries.Count - 1; i++)
             {
-                blockchain.Entries[i].Hash = blockchain.Entries[i].HashEntry();
+                blockchain.Entries[i].HashEntry(blockchain.Entries[i - 1].Hash);
             }
 
             blockchain.Entries[10].Data = GetStringFromHash(blockchain.Entries[0].Hash) + ":" +
@@ -86,7 +88,7 @@ namespace ProofOfWork
                     GetStringFromHash(blockchain.Entries[8].Hash) + ":" +
                     GetStringFromHash(blockchain.Entries[9].Hash);
 
-            blockchain.Entries[10].Hash = blockchain.Entries[10].HashEntry();
+            blockchain.Entries[10].HashEntry(blockchain.Entries[9].Hash);
 
             return blockchain;
         }
