@@ -12,7 +12,6 @@ namespace ProofOfWork
             //Create a test blockchain
             Blockchain blockchain = GenerateTestBlockChain();
             
-
             //Do Proof of Work
             BlockchainPow bp = new BlockchainPow();
 
@@ -53,6 +52,7 @@ namespace ProofOfWork
                 Guid.NewGuid()
             };
 
+            //Create a blockchain
             BlockchainEntry[] blockchains =
             {
                 new BlockchainEntry() { Id = guids[0], Data = "genesis", IsPOW = false, PrevId = null, Timestamp = DateTime.UtcNow },
@@ -70,13 +70,16 @@ namespace ProofOfWork
 
             blockchain.Entries.AddRange(blockchains);
 
-            blockchain.Entries[0].HashGenysisEntry();
+            //Generate hash for genesis block
+            blockchain.Entries[0].HashGenesisEntry();
 
+            //Generate hashes of blocks 1-9
             for (int i = 1; i < blockchain.Entries.Count - 1; i++)
             {
                 blockchain.Entries[i].HashEntry(blockchain.Entries[i - 1].Hash);
             }
 
+            //Record hashes to the ProofOfWork block
             blockchain.Entries[10].Data = GetStringFromHash(blockchain.Entries[0].Hash) + ":" +
                     GetStringFromHash(blockchain.Entries[1].Hash) + ":" +
                     GetStringFromHash(blockchain.Entries[2].Hash) + ":" +
@@ -88,6 +91,7 @@ namespace ProofOfWork
                     GetStringFromHash(blockchain.Entries[8].Hash) + ":" +
                     GetStringFromHash(blockchain.Entries[9].Hash);
 
+            //Create a hash for the ProofOfWork block
             blockchain.Entries[10].HashEntry(blockchain.Entries[9].Hash);
 
             return blockchain;

@@ -17,7 +17,7 @@ namespace LibBlockchain
         public Guid? Nonce { get; set; }
 
 
-        public void HashGenysisEntry()
+        public void HashGenesisEntry()
         {
             string toBeHashed = Id.ToString() + Data.ToString() + Timestamp.ToString();
             byte[] bytesToBeHashed = Encoding.Unicode.GetBytes(toBeHashed);
