@@ -19,7 +19,7 @@ namespace ProofOfWork
 
             Console.WriteLine(GetStringFromHash(blockchain.Entries[10].POWHash));
 
-            Tuple<byte[], Guid> tp2 = bp.PoW(2, blockchain.Entries[10]);
+            Tuple<byte[], Guid> tp2 = bp.PoW(3, blockchain.Entries[10]);
             blockchain.Entries[10].POWHash = tp2.Item1;
             blockchain.Entries[10].Nonce = tp2.Item2;
 

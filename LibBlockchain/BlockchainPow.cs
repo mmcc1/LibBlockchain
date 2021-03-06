@@ -55,7 +55,7 @@ namespace LibBlockchain
 
                 int clz = CountLeadingZeros(hash);
 
-                if (clz == difficulty)
+                if (clz >= difficulty)
                     return Tuple.Create(hash, nonce);
             }
 
