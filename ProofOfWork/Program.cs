@@ -73,25 +73,22 @@ namespace ProofOfWork
             //Generate hash for genesis block
             blockchain.Entries[0].HashGenesisEntry();
 
+
+            List<string> hashes = new List<string>();
+            hashes.Add(GetStringFromHash(blockchain.Entries[0].Hash));
+
             //Generate hashes of blocks 1-9
             for (int i = 1; i < blockchain.Entries.Count - 1; i++)
             {
                 blockchain.Entries[i].HashEntry(blockchain.Entries[i - 1].Hash);
+                hashes.Add(GetStringFromHash(blockchain.Entries[i].Hash));
             }
 
-            //Record hashes to the ProofOfWork block
-            blockchain.Entries[10].Data = GetStringFromHash(blockchain.Entries[0].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[1].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[2].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[3].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[4].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[5].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[6].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[7].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[8].Hash) + ":" +
-                    GetStringFromHash(blockchain.Entries[9].Hash);
+            //Create Merkle tree and store result
+            MerkleTree mt = new MerkleTree();
+            blockchain.Entries[10].Data = mt.BuildMerkleRoot(hashes);
 
-            //Create a hash for the ProofOfWork block
+            //Add hash for PoW block
             blockchain.Entries[10].HashEntry(blockchain.Entries[9].Hash);
 
             return blockchain;
